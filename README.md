@@ -22,7 +22,7 @@ If you're using a Mac and aren't familiar with coding, follow these step-by-step
    - When the installation is complete, restart your computer
 
 2. **Download this project**:
-   - Download this project as a ZIP file and unzip it to a folder
+   - Download this project as a ZIP file and unzip it to a folder (click on the green "Code" button at the top of this page and then the "Download Zip" option)
    - Remember where you saved it (for example, in your Downloads folder)
 
 3. **Open Terminal**:
