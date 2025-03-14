@@ -140,17 +140,16 @@ def extract_image_urls_method1(browser, search_term, num_scrolls=10):
 
 def extract_image_urls_method2(browser, search_term, num_scrolls=10):
     """
-    Extract image URLs using method 2: Pin elements
-    This method extracts images from pin elements
+    Extract image URLs using an improved method with better selectors and scroll-wait pattern
     """
     from urllib.parse import quote_plus
     # Properly encode the search term - use the exact term as provided
     search_url = f"https://www.pinterest.com/search/pins/?q={quote_plus(search_term)}&rs=typed"
-    logger.info(f"Navigating to search URL for method 2: {search_url}")
+    logger.info(f"Navigating to search URL: {search_url}")
     
     try:
         browser.get(search_url)
-        logger.info(f"Loaded search page for method 2: '{search_term}'")
+        logger.info(f"Loaded search page for '{search_term}'")
         
         # Wait for page to load
         logger.info("Waiting for images to load")
@@ -162,80 +161,185 @@ def extract_image_urls_method2(browser, search_term, num_scrolls=10):
         except TimeoutException:
             logger.warning("Timeout waiting for images to load, continuing anyway")
         
-        # Scroll down to load more images
-        logger.info(f"Scrolling to load more images for method 2 ({num_scrolls} scrolls)")
-        for i in range(num_scrolls):
-            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            # Wait longer between scrolls for method 2
-            time.sleep(2.5)
-            logger.info(f"Method 2 scroll {i+1}/{num_scrolls} completed")
+        # Initial height of page
+        last_height = browser.execute_script("return document.body.scrollHeight")
         
-        # Try to get the resource URLs
-        image_urls = []
-        try:
-            # Look for pin elements with image data
-            logger.info("Attempting to extract image URLs from pin elements")
-            script = """
-            // This method attempts to find pins with images
-            var imageUrls = [];
-            try {
-                // Try multiple selectors to find pins
-                var pins = Array.from(document.querySelectorAll('[data-test-pin-id], [data-test-id="pin"], .Pin'));
-                console.log("Found " + pins.length + " pin elements");
+        # Track found URLs
+        all_image_urls = set()
+        
+        # Implement scroll and wait pattern with improved extraction
+        logger.info(f"Using scroll-wait-extract pattern for up to {num_scrolls} scrolls")
+        for i in range(num_scrolls):
+            # Scroll down in smaller increments (about 1/3 of the viewport)
+            browser.execute_script("window.scrollBy(0, window.innerHeight/1.5);")
+            
+            # Wait briefly for images to load (0.5 seconds)
+            time.sleep(0.5)
+            
+            # Extract image URLs using improved selectors and patterns
+            image_urls = extract_all_image_urls_on_page(browser)
+            
+            # Add new URLs to our collection
+            num_new_urls = 0
+            for url in image_urls:
+                if url not in all_image_urls:
+                    all_image_urls.add(url)
+                    num_new_urls += 1
+            
+            logger.info(f"Scroll {i+1}/{num_scrolls}: Found {num_new_urls} new images (total: {len(all_image_urls)})")
+            
+            # Check if we've reached the bottom of the page
+            new_height = browser.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                # We might be at the bottom, try one more scroll
+                browser.execute_script("window.scrollBy(0, window.innerHeight);")
+                time.sleep(0.5)
+                newer_height = browser.execute_script("return document.body.scrollHeight")
                 
-                pins.forEach(function(pin) {
-                    var img = pin.querySelector('img');
-                    if (img && img.src) {
-                        var src = img.src;
-                        // Look for various image patterns
-                        if (src.indexOf('236x') !== -1) {
-                            imageUrls.push(src.replace('236x', 'originals'));
-                        } else if (src.indexOf('474x') !== -1) {
-                            imageUrls.push(src.replace('474x', 'originals'));
-                        } else if (src.indexOf('736x') !== -1) {
-                            imageUrls.push(src.replace('736x', 'originals'));
-                        } else if (src.length > 20 && !src.includes('data:image')) {
-                            // Include any non-data URLs that look like images
-                            imageUrls.push(src);
+                if newer_height == new_height:
+                    logger.info("Reached the bottom of the page, stopping scrolls")
+                    break
+            
+            last_height = new_height
+        
+        # Final extraction after all scrolls
+        final_urls = extract_all_image_urls_on_page(browser)
+        for url in final_urls:
+            all_image_urls.add(url)
+            
+        logger.info(f"Extraction complete: Found {len(all_image_urls)} total image URLs")
+        return list(all_image_urls)
+        
+    except Exception as e:
+        logger.error(f"Error in extract_image_urls_method2: {str(e)}")
+        logger.error(traceback.format_exc())
+        return []
+
+def extract_all_image_urls_on_page(browser):
+    """
+    Extract all possible image URLs from the current page using multiple selectors and patterns.
+    More comprehensive than previous methods.
+    """
+    image_urls = set()
+    
+    try:
+        # Method 1: Standard pin images
+        pin_script = """
+        var urls = [];
+        
+        // Collect all images from pins (more comprehensive selectors)
+        var pinImages = document.querySelectorAll('[data-test-pin-id] img, [data-test-id="pin"] img, .Pin img, div[data-test-id] img');
+        pinImages.forEach(function(img) {
+            if (img.src && img.src.includes('i.pinimg.com')) {
+                urls.push(img.src);
+            }
+        });
+        
+        // Collect from any img element with a valid src
+        var allImages = document.querySelectorAll('img[src*="i.pinimg.com"]');
+        allImages.forEach(function(img) {
+            if (img.src) {
+                urls.push(img.src);
+            }
+        });
+        
+        return urls;
+        """
+        pin_urls = browser.execute_script(pin_script)
+        
+        # Method 2: Extract from srcset attributes (higher quality)
+        srcset_script = """
+        var srcsetUrls = [];
+        
+        // Look at all img elements with srcset attribute
+        var srcsetImages = document.querySelectorAll('img[srcset]');
+        srcsetImages.forEach(function(img) {
+            if (img.srcset) {
+                // Parse srcset to get highest quality URL
+                var srcset = img.srcset.split(',');
+                var highestUrl = '';
+                var highestWidth = 0;
+                
+                // Find highest resolution image in srcset
+                srcset.forEach(function(src) {
+                    var parts = src.trim().split(' ');
+                    if (parts.length >= 2) {
+                        var url = parts[0];
+                        var width = parseInt(parts[1].replace('w', ''));
+                        
+                        if (width > highestWidth && url.includes('i.pinimg.com')) {
+                            highestWidth = width;
+                            highestUrl = url;
                         }
                     }
                 });
                 
-                // If we didn't find many, try a broader selector
-                if (imageUrls.length < 10) {
-                    var allImages = Array.from(document.querySelectorAll('img[srcset]'));
-                    allImages.forEach(function(img) {
-                        if (img.srcset) {
-                            // Get the highest resolution from srcset
-                            var srcset = img.srcset.split(',');
-                            var lastSrc = srcset[srcset.length - 1].trim().split(' ')[0];
-                            if (lastSrc && lastSrc.length > 20) {
-                                imageUrls.push(lastSrc);
-                            }
-                        }
-                    });
+                if (highestUrl) {
+                    srcsetUrls.push(highestUrl);
                 }
-            } catch (e) {
-                console.error("Error in JavaScript extraction:", e);
             }
-            return imageUrls;
-            """
-            image_urls = browser.execute_script(script)
-            logger.info(f"Found {len(image_urls)} image URLs using method 2")
+        });
+        
+        return srcsetUrls;
+        """
+        srcset_urls = browser.execute_script(srcset_script)
+        
+        # Method 3: Look for background images in style attributes (optimized version)
+        bg_script = """
+        var bgUrls = [];
+        
+        // Only check elements that might have background images (limited subset for efficiency)
+        var elements = document.querySelectorAll('div[style*="background"], div[class*="image"], div[class*="pin"], div[class*="cover"]');
+        for (var i = 0; i < elements.length && i < 200; i++) {  // Limit to 200 elements for performance
+            var style = window.getComputedStyle(elements[i]);
+            var bg = style.getPropertyValue('background-image');
+            if (bg && bg !== 'none' && bg.includes('i.pinimg.com')) {
+                // Extract URL from "url(...)" format
+                var matches = bg.match(/url\\(['"]?(.*?)['"]?\\)/);
+                if (matches && matches[1]) {
+                    bgUrls.push(matches[1]);
+                }
+            }
+        }
+        
+        return bgUrls;
+        """
+        bg_urls = browser.execute_script(bg_script)
+        
+        # Combine all URLs
+        all_urls = pin_urls + srcset_urls + bg_urls
+        
+        # Process URLs to get highest quality version
+        for url in all_urls:
+            if not url or not isinstance(url, str):
+                continue
+                
+            # Skip data URLs
+            if url.startswith('data:'):
+                continue
+                
+            # Skip small thumbnails
+            if '/60x60/' in url:
+                continue
+                
+            # Convert to highest quality version
+            # Look for common Pinterest image patterns and convert to originals
+            patterns = ['/236x/', '/474x/', '/736x/', '/1200x/', '/550x/', '/170x/']
             
-            # Log a few URLs for debugging
-            if image_urls:
-                logger.info(f"Method 2 sample URLs: {image_urls[:3]}")
-            else:
-                logger.warning("No image URLs found with method 2")
-        except Exception as e:
-            logger.error(f"Error extracting image URLs in method 2: {str(e)}")
-            logger.error(traceback.format_exc())
+            processed_url = url
+            for pattern in patterns:
+                if pattern in url:
+                    processed_url = url.replace(pattern, '/originals/')
+                    break
+                    
+            # If it's a Pinterest image URL, add it
+            if 'i.pinimg.com' in processed_url:
+                image_urls.add(processed_url)
+                
     except Exception as e:
-        logger.error(f"Error in extract_image_urls_method2: {str(e)}")
-        logger.error(traceback.format_exc())
+        logger.error(f"Error extracting image URLs: {str(e)}")
     
-    return image_urls
+    return list(image_urls)
 
 def download_image(args):
     """Download a single image"""

@@ -1,10 +1,11 @@
 # Pinterest Search Terms
 # Format: "search term":number_of_images
 # Example: "mountain landscape":25 will download 25 images of mountain landscapes
+# if you dont add ":25" or any other number it will download images with count coming from DEFAULT_IMAGES variable below 
 # Once executed, search lines will be marked completed with "DONE - " at the beginning of the line like "DONE - "mountain landscape":25"
 
 # Set default image count (applies to all terms without specific count)
-DEFAULT_IMAGES:100
+DEFAULT_IMAGES:200
 
 # Add your search terms below (one per line)
 # If no image count is specified, the DEFAULT_IMAGES value will be used

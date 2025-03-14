@@ -7,6 +7,8 @@ import shutil
 import threading
 import queue
 import time
+import asyncio
+import aiohttp
 from concurrent.futures import ThreadPoolExecutor
 import requests
 import shlex
@@ -217,12 +219,15 @@ def scroll_and_extract_urls(search_term, max_images=100, max_scrolls=30):
     browser = setup_browser(headless=False)  # Use visible browser for reliability
     
     try:
-        # Try first method
-        print("- Using extraction method 1")
-        urls1 = extract_image_urls_method1(browser, search_term, max_scrolls)
+        # Use optimized extraction with faster scrolling
+        # Increase scrolls since we're waiting less time between them
+        adjusted_scrolls = max(max_scrolls, max_images // 5)  # Ensure enough scrolls to find images
+        print(f"- Using improved image extraction with {adjusted_scrolls} rapid scrolls")
         
-        # Add results from method 1
-        for url in urls1:
+        urls = extract_image_urls_method2(browser, search_term, adjusted_scrolls)
+        
+        # Process the URLs
+        for url in urls:
             # Skip small thumbnail images
             if "/60x60/" in url:
                 continue
@@ -238,40 +243,11 @@ def scroll_and_extract_urls(search_term, max_images=100, max_scrolls=30):
                 seen_urls.add(url)
                 url_queue.put(url)
                 total_urls_found += 1
-                print(f"  - Found image URL: {url}")
+                # Don't print every URL to keep console output cleaner
+                if total_urls_found % 10 == 0 or total_urls_found <= 5:
+                    print(f"  - Found {total_urls_found} image URLs...")
         
-        print(f"- Method 1 found {len(urls1)} image URLs")
-        
-        # Try second method if needed
-        if len(urls1) < max_images:
-            print(f"- Method 1 found only {len(urls1)} images, trying method 2")
-            browser.refresh()
-            time.sleep(3)
-            urls2 = extract_image_urls_method2(browser, search_term, max_scrolls)
-            
-            # Add results from method 2
-            for url in urls2:
-                # Skip small thumbnail images
-                if "/60x60/" in url:
-                    continue
-                    
-                # Convert to original URL format if needed
-                if "/originals/" not in url:
-                    url = url.replace("/236x/", "/originals/")
-                    url = url.replace("/474x/", "/originals/")
-                    url = url.replace("/736x/", "/originals/")
-                
-                # Only add new URLs
-                if url not in seen_urls and "i.pinimg.com" in url:
-                    seen_urls.add(url)
-                    url_queue.put(url)
-                    total_urls_found += 1
-                    print(f"  - Found image URL: {url}")
-            
-            print(f"- Method 2 found {len(urls2)} additional image URLs")
-            print(f"- Combined total: {total_urls_found} unique image URLs")
-        
-        print(f"- URL extraction completed with {total_urls_found} URLs found")
+        print(f"- Found {total_urls_found} unique image URLs")
         return url_queue
         
     finally:
@@ -282,81 +258,150 @@ def scroll_and_extract_urls(search_term, max_images=100, max_scrolls=30):
 def download_images_from_queue(url_queue, image_count, temp_dir, output_dir, shared_state, lock):
     """Download images from the URL queue until enough images are downloaded."""
     try:
-        print(f"- Starting download process for up to {image_count} images")
+        print(f"- Starting batch download process for up to {image_count} images")
         
-        # Create list to store download tasks
-        download_tasks = []
+        # Create temp directory if it doesn't exist
+        os.makedirs(temp_dir, exist_ok=True)
         
-        # Create a thread pool for parallel downloads
-        with ThreadPoolExecutor(max_workers=5) as executor:
-            # Process all URLs in the queue
-            while not url_queue.empty():
-                # Check if we've downloaded enough images
-                with lock:
-                    downloads_done = shared_state['downloads_completed']
-                    if downloads_done >= image_count:
-                        break
-                
-                try:
-                    # Get a URL from the queue
-                    url = url_queue.get(timeout=0.5)
-                    
-                    # Process this URL
-                    file_name = f"image_{len(download_tasks):04d}.jpg"
-                    output_path = os.path.join(temp_dir, file_name)
-                    
-                    # Submit download task to thread pool
-                    future = executor.submit(download_single_image, url, output_path, lock, shared_state)
-                    download_tasks.append(future)
-                    
-                    # Provide status updates
-                    if len(download_tasks) % 5 == 0:
-                        with lock:
-                            print(f"  - Queued {len(download_tasks)} downloads, completed {shared_state['downloads_completed']}")
-                            
-                except queue.Empty:
-                    # No more URLs available
-                    break
+        # Get URLs from the queue (up to image_count)
+        urls = []
+        while not url_queue.empty() and len(urls) < image_count:
+            urls.append(url_queue.get())
         
-        # Wait for all downloads to complete
-        for future in download_tasks:
-            future.result()
+        with lock:
+            shared_state['urls_found'] = len(urls)
+        
+        # Use asyncio to download in batches
+        try:
+            # Run the async download function
+            download_result = asyncio.run(batch_download_to_temp(urls, temp_dir, image_count, shared_state, lock))
             
-        print(f"- Download process completed")
-        return True
+            # Update state
+            with lock:
+                success = shared_state['downloads_completed'] > 0
+            
+            print(f"- Batch download process completed")
+            return success
+        except Exception as e:
+            print(f"- Error in batch download process: {str(e)}")
+            with lock:
+                shared_state['success'] = False
+            return False
         
     except Exception as e:
         print(f"Error in download process: {str(e)}")
+        with lock:
+            shared_state['success'] = False
         return False
 
-def download_single_image(url, output_path, lock, shared_state):
-    """Download a single image and update the shared state."""
-    try:
-        # Download the image
-        headers = {
+async def batch_download_to_temp(urls, temp_dir, max_images, shared_state, lock):
+    """
+    Download images in batches to a temporary directory using asyncio.
+    Updates shared_state with progress information.
+    
+    Args:
+        urls: List of image URLs to download
+        temp_dir: Temporary directory for downloads
+        max_images: Maximum number of images to download
+        shared_state: Shared state dictionary
+        lock: Threading lock for updating shared state
+        
+    Returns:
+        True if successful, False otherwise
+    """
+    # Limit to max_images
+    urls = urls[:max_images]
+    batch_size = 10  # Process 10 images at once
+    total_batches = (len(urls) + batch_size - 1) // batch_size  # Ceiling division
+    
+    # Configure timeout and connection limits for aiohttp
+    timeout = aiohttp.ClientTimeout(total=30, connect=10, sock_read=20)
+    connector = aiohttp.TCPConnector(limit=10, ttl_dns_cache=300)
+    
+    print(f"- Starting batch downloads with {total_batches} batches of up to {batch_size} images each")
+    
+    async with aiohttp.ClientSession(
+        timeout=timeout, 
+        connector=connector,
+        headers={
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
             'Referer': 'https://www.pinterest.com/'
         }
-        
-        response = requests.get(url, timeout=10, headers=headers)
-        if response.status_code == 200:
-            with open(output_path, 'wb') as f:
-                f.write(response.content)
+    ) as session:
+        # Process in batches
+        for batch_num in range(total_batches):
+            start_idx = batch_num * batch_size
+            end_idx = min(start_idx + batch_size, len(urls))
+            batch_urls = urls[start_idx:end_idx]
             
-            # Update success count
+            print(f"  - Processing batch {batch_num + 1}/{total_batches} ({len(batch_urls)} images)")
+            
+            # Create download tasks for this batch
+            tasks = []
+            for i, url in enumerate(batch_urls):
+                idx = start_idx + i
+                filename = f"image_{idx:04d}.jpg"
+                filepath = os.path.join(temp_dir, filename)
+                tasks.append(download_single_image_async(session, url, filepath, lock, shared_state))
+            
+            # Wait for all downloads in this batch to complete
+            await asyncio.gather(*tasks, return_exceptions=True)
+            
+            # Show progress
             with lock:
-                shared_state['downloads_completed'] += 1
-        else:
-            # Update failure count
+                completed = shared_state['downloads_completed']
+                failed = shared_state['downloads_failed']
+                print(f"  - Downloaded {completed} images, {failed} failed")
+                
+                # Check if we've reached the limit
+                if completed >= max_images:
+                    print(f"  - Reached target of {max_images} images, stopping")
+                    break
+    
+    # Final summary
+    with lock:
+        completed = shared_state['downloads_completed']
+        failed = shared_state['downloads_failed']
+        print(f"- Download complete: {completed} successful, {failed} failed")
+    
+    return True
+
+async def download_single_image_async(session, url, filepath, lock=None, shared_state=None):
+    """Download a single image asynchronously using aiohttp."""
+    try:
+        async with session.get(url) as response:
+            if response.status == 200:
+                # Read image data
+                image_data = await response.read()
+                
+                # Save to file using asyncio.to_thread for non-blocking file operations
+                # Instead of trying to use asyncio.to_thread as a context manager, call it directly
+                f = await asyncio.to_thread(open, filepath, 'wb')
+                await asyncio.to_thread(f.write, image_data)
+                await asyncio.to_thread(f.close)  # Make sure to close the file
+                
+                # Update shared state if provided
+                if lock and shared_state:
+                    with lock:
+                        shared_state['downloads_completed'] += 1
+                
+                return True
+            else:
+                # Update shared state if provided
+                if lock and shared_state:
+                    with lock:
+                        shared_state['downloads_failed'] += 1
+                
+                return False
+    except Exception as e:
+        # Update shared state if provided
+        if lock and shared_state:
             with lock:
                 shared_state['downloads_failed'] += 1
-                print(f"  - Failed to download {url}: HTTP {response.status_code}")
-                
-    except Exception as e:
-        # Update failure count
-        with lock:
-            shared_state['downloads_failed'] += 1
-            print(f"  - Error downloading {url}: {str(e)}")
+                print(f"  - Failed to download {url}: {str(e)}")
+        
+        # Return the exception to be handled by the caller
+        return e
 
 def move_files_from_temp(temp_dir, output_dir):
     """Move downloaded files from temp directory to output directory."""
@@ -389,50 +434,102 @@ def move_files_from_temp(temp_dir, output_dir):
         print(f"Error moving files: {str(e)}")
 
 def download_images(url_queue, output_dir, max_images=100):
-    """Download images from the URL queue."""
+    """Download images from the URL queue using batch processing with asyncio."""
     print("- Download process started")
-    
-    # Create a session for faster downloads
-    session = requests.Session()
-    
-    # Add headers to look like a browser
-    session.headers.update({
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Referer': 'https://www.pinterest.com/'
-    })
     
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
-    # Download images
-    downloaded = 0
+    # Get all URLs from the queue
+    urls = []
+    while not url_queue.empty() and len(urls) < max_images:
+        urls.append(url_queue.get())
     
-    while not url_queue.empty() and downloaded < max_images:
-        try:
-            url = url_queue.get()
-            
-            # Generate a filename
-            filename = f"image_{downloaded:04d}.jpg"
-            filepath = os.path.join(output_dir, filename)
-            
-            # Download the image
-            response = session.get(url, timeout=10)
-            if response.status_code == 200:
-                with open(filepath, 'wb') as f:
-                    f.write(response.content)
-                downloaded += 1
-                
-                # Print progress every 5 images
-                if downloaded % 5 == 0:
-                    print(f"  - Downloaded {downloaded} images so far")
-            else:
-                print(f"  - Failed to download {url}: HTTP {response.status_code}")
-                
-        except Exception as e:
-            print(f"  - Error downloading image: {str(e)}")
+    total_urls = len(urls)
+    print(f"- Preparing to download {total_urls} images in batches")
     
-    print("- Download process completed")
-    return downloaded
+    if not urls:
+        print("- No URLs to download")
+        return 0
+    
+    # Use asyncio to download in batches
+    try:
+        # Run the async download function
+        downloaded = asyncio.run(batch_download_images(urls, output_dir, max_images))
+        print(f"- Successfully downloaded {downloaded} images")
+        return downloaded
+    except Exception as e:
+        print(f"- Error in batch download process: {str(e)}")
+        return 0
+
+async def batch_download_images(urls, output_dir, max_images):
+    """
+    Download images in batches using asyncio for improved performance.
+    
+    Args:
+        urls: List of image URLs to download
+        output_dir: Directory to save images
+        max_images: Maximum number of images to download
+        
+    Returns:
+        Number of successfully downloaded images
+    """
+    # Limit to max_images
+    urls = urls[:max_images]
+    batch_size = 10  # Process 10 images at once
+    total_batches = (len(urls) + batch_size - 1) // batch_size  # Ceiling division
+    
+    # Set up shared counter and completed images list
+    download_counter = 0
+    failed_downloads = []
+    
+    # Configure timeout and connection limits for aiohttp
+    timeout = aiohttp.ClientTimeout(total=30, connect=10, sock_read=20)
+    connector = aiohttp.TCPConnector(limit=10, ttl_dns_cache=300)
+    
+    print(f"- Starting batch downloads with {total_batches} batches of up to {batch_size} images each")
+    
+    async with aiohttp.ClientSession(
+        timeout=timeout, 
+        connector=connector,
+        headers={
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Referer': 'https://www.pinterest.com/'
+        }
+    ) as session:
+        # Process in batches
+        for batch_num in range(total_batches):
+            start_idx = batch_num * batch_size
+            end_idx = min(start_idx + batch_size, len(urls))
+            batch_urls = urls[start_idx:end_idx]
+            
+            print(f"  - Processing batch {batch_num + 1}/{total_batches} ({len(batch_urls)} images)")
+            
+            # Create download tasks for this batch
+            tasks = []
+            for i, url in enumerate(batch_urls):
+                idx = start_idx + i
+                filename = f"image_{idx:04d}.jpg"
+                filepath = os.path.join(output_dir, filename)
+                tasks.append(download_single_image_async(session, url, filepath))
+            
+            # Wait for all downloads in this batch to complete
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+            
+            # Process results
+            for i, result in enumerate(results):
+                if isinstance(result, Exception):
+                    failed_downloads.append(batch_urls[i])
+                    print(f"  - Failed to download {batch_urls[i]}: {str(result)}")
+                elif result:
+                    download_counter += 1
+            
+            # Show progress
+            print(f"  - Downloaded {download_counter} images so far")
+    
+    # Final summary
+    print(f"- Download complete: {download_counter} successful, {len(failed_downloads)} failed")
+    return download_counter
 
 if __name__ == "__main__":
     main()
