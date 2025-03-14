@@ -1,0 +1,269 @@
+2025-03-14 05:55:06,160 - pinterest_browser_scraper - INFO - Setting up Chrome browser
+2025-03-14 05:55:06,160 - pinterest_browser_scraper - INFO - Attempting to get compatible ChromeDriver
+2025-03-14 05:55:06,160 - WDM - INFO - ====== WebDriver manager ======
+2025-03-14 05:55:06,929 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-14 05:55:07,054 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-14 05:55:07,175 - WDM - INFO - Driver [C:\Users\RISHI\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver.exe] found in cache
+2025-03-14 05:55:08,248 - pinterest_browser_scraper - INFO - Chrome browser initialized successfully
+2025-03-14 05:55:08,249 - pinterest_browser_scraper - INFO - Navigating to search URL: https://www.pinterest.com/search/pins/?q=Y2K+glamour+%28ed+hardy%2C+2000s+dolce%26gabbana%2C+2000s+Dior%2C+2000s+Roberto+cavalli%2C+von+dutch%29&rs=typed
+2025-03-14 05:55:11,296 - pinterest_browser_scraper - INFO - Loaded search page for 'Y2K glamour (ed hardy, 2000s dolce&gabbana, 2000s Dior, 2000s Roberto cavalli, von dutch)'
+2025-03-14 05:55:11,296 - pinterest_browser_scraper - INFO - Waiting for images to load
+2025-03-14 05:55:11,332 - pinterest_browser_scraper - INFO - Images loaded successfully
+2025-03-14 05:55:11,332 - pinterest_browser_scraper - INFO - Scrolling to load more images (30 scrolls)
+2025-03-14 05:55:13,341 - pinterest_browser_scraper - INFO - Scroll 1/30 completed
+2025-03-14 05:55:15,352 - pinterest_browser_scraper - INFO - Scroll 2/30 completed
+2025-03-14 05:55:17,358 - pinterest_browser_scraper - INFO - Scroll 3/30 completed
+2025-03-14 05:55:19,435 - pinterest_browser_scraper - INFO - Scroll 4/30 completed
+2025-03-14 05:55:21,447 - pinterest_browser_scraper - INFO - Scroll 5/30 completed
+2025-03-14 05:55:23,457 - pinterest_browser_scraper - INFO - Scroll 6/30 completed
+2025-03-14 05:55:25,464 - pinterest_browser_scraper - INFO - Scroll 7/30 completed
+2025-03-14 05:55:27,471 - pinterest_browser_scraper - INFO - Scroll 8/30 completed
+2025-03-14 05:55:29,477 - pinterest_browser_scraper - INFO - Scroll 9/30 completed
+2025-03-14 05:55:31,490 - pinterest_browser_scraper - INFO - Scroll 10/30 completed
+2025-03-14 05:55:33,500 - pinterest_browser_scraper - INFO - Scroll 11/30 completed
+2025-03-14 05:55:35,508 - pinterest_browser_scraper - INFO - Scroll 12/30 completed
+2025-03-14 05:55:37,515 - pinterest_browser_scraper - INFO - Scroll 13/30 completed
+2025-03-14 05:55:39,520 - pinterest_browser_scraper - INFO - Scroll 14/30 completed
+2025-03-14 05:55:41,527 - pinterest_browser_scraper - INFO - Scroll 15/30 completed
+2025-03-14 05:55:43,534 - pinterest_browser_scraper - INFO - Scroll 16/30 completed
+2025-03-14 05:55:45,543 - pinterest_browser_scraper - INFO - Scroll 17/30 completed
+2025-03-14 05:55:47,549 - pinterest_browser_scraper - INFO - Scroll 18/30 completed
+2025-03-14 05:55:49,558 - pinterest_browser_scraper - INFO - Scroll 19/30 completed
+2025-03-14 05:55:51,566 - pinterest_browser_scraper - INFO - Scroll 20/30 completed
+2025-03-14 05:55:53,574 - pinterest_browser_scraper - INFO - Scroll 21/30 completed
+2025-03-14 05:55:55,584 - pinterest_browser_scraper - INFO - Scroll 22/30 completed
+2025-03-14 05:55:57,593 - pinterest_browser_scraper - INFO - Scroll 23/30 completed
+2025-03-14 05:55:59,609 - pinterest_browser_scraper - INFO - Scroll 24/30 completed
+2025-03-14 05:56:01,621 - pinterest_browser_scraper - INFO - Scroll 25/30 completed
+2025-03-14 05:56:03,629 - pinterest_browser_scraper - INFO - Scroll 26/30 completed
+2025-03-14 05:56:05,638 - pinterest_browser_scraper - INFO - Scroll 27/30 completed
+2025-03-14 05:56:07,646 - pinterest_browser_scraper - INFO - Scroll 28/30 completed
+2025-03-14 05:56:09,657 - pinterest_browser_scraper - INFO - Scroll 29/30 completed
+2025-03-14 05:56:11,670 - pinterest_browser_scraper - INFO - Scroll 30/30 completed
+2025-03-14 05:56:11,671 - pinterest_browser_scraper - INFO - Extracting image URLs from the page
+2025-03-14 05:56:11,690 - pinterest_browser_scraper - INFO - Found 16 image URLs using method 1
+2025-03-14 05:56:11,690 - pinterest_browser_scraper - INFO - Sample URLs: ['https://i.pinimg.com/originals/3d/f3/ee/3df3ee30646f90907c7b57c87bb71002.jpg', 'https://i.pinimg.com/originals/83/8b/32/838b32d75bfee1ff55d9aba06bdc2e08.jpg', 'https://i.pinimg.com/originals/5d/96/cc/5d96ccd1c48b543ba682357ac5834f5a.jpg']
+2025-03-14 05:56:16,492 - pinterest_browser_scraper - INFO - Navigating to search URL for method 2: https://www.pinterest.com/search/pins/?q=Y2K+glamour+%28ed+hardy%2C+2000s+dolce%26gabbana%2C+2000s+Dior%2C+2000s+Roberto+cavalli%2C+von+dutch%29&rs=typed
+2025-03-14 05:56:17,936 - pinterest_browser_scraper - INFO - Loaded search page for method 2: 'Y2K glamour (ed hardy, 2000s dolce&gabbana, 2000s Dior, 2000s Roberto cavalli, von dutch)'
+2025-03-14 05:56:17,936 - pinterest_browser_scraper - INFO - Waiting for images to load
+2025-03-14 05:56:20,498 - pinterest_browser_scraper - INFO - Images loaded successfully
+2025-03-14 05:56:20,498 - pinterest_browser_scraper - INFO - Scrolling to load more images for method 2 (30 scrolls)
+2025-03-14 05:56:23,148 - pinterest_browser_scraper - INFO - Method 2 scroll 1/30 completed
+2025-03-14 05:56:25,661 - pinterest_browser_scraper - INFO - Method 2 scroll 2/30 completed
+2025-03-14 05:56:28,174 - pinterest_browser_scraper - INFO - Method 2 scroll 3/30 completed
+2025-03-14 05:56:30,688 - pinterest_browser_scraper - INFO - Method 2 scroll 4/30 completed
+2025-03-14 05:56:33,202 - pinterest_browser_scraper - INFO - Method 2 scroll 5/30 completed
+2025-03-14 05:56:35,717 - pinterest_browser_scraper - INFO - Method 2 scroll 6/30 completed
+2025-03-14 05:56:38,231 - pinterest_browser_scraper - INFO - Method 2 scroll 7/30 completed
+2025-03-14 05:56:40,744 - pinterest_browser_scraper - INFO - Method 2 scroll 8/30 completed
+2025-03-14 05:56:43,256 - pinterest_browser_scraper - INFO - Method 2 scroll 9/30 completed
+2025-03-14 05:56:45,771 - pinterest_browser_scraper - INFO - Method 2 scroll 10/30 completed
+2025-03-14 05:56:48,284 - pinterest_browser_scraper - INFO - Method 2 scroll 11/30 completed
+2025-03-14 05:56:50,796 - pinterest_browser_scraper - INFO - Method 2 scroll 12/30 completed
+2025-03-14 05:56:53,310 - pinterest_browser_scraper - INFO - Method 2 scroll 13/30 completed
+2025-03-14 05:56:55,823 - pinterest_browser_scraper - INFO - Method 2 scroll 14/30 completed
+2025-03-14 05:56:58,334 - pinterest_browser_scraper - INFO - Method 2 scroll 15/30 completed
+2025-03-14 05:57:00,849 - pinterest_browser_scraper - INFO - Method 2 scroll 16/30 completed
+2025-03-14 05:57:03,367 - pinterest_browser_scraper - INFO - Method 2 scroll 17/30 completed
+2025-03-14 05:57:05,880 - pinterest_browser_scraper - INFO - Method 2 scroll 18/30 completed
+2025-03-14 05:57:08,395 - pinterest_browser_scraper - INFO - Method 2 scroll 19/30 completed
+2025-03-14 05:57:10,906 - pinterest_browser_scraper - INFO - Method 2 scroll 20/30 completed
+2025-03-14 05:57:13,414 - pinterest_browser_scraper - INFO - Method 2 scroll 21/30 completed
+2025-03-14 05:57:15,928 - pinterest_browser_scraper - INFO - Method 2 scroll 22/30 completed
+2025-03-14 05:57:18,438 - pinterest_browser_scraper - INFO - Method 2 scroll 23/30 completed
+2025-03-14 05:57:20,953 - pinterest_browser_scraper - INFO - Method 2 scroll 24/30 completed
+2025-03-14 05:57:23,464 - pinterest_browser_scraper - INFO - Method 2 scroll 25/30 completed
+2025-03-14 05:57:25,978 - pinterest_browser_scraper - INFO - Method 2 scroll 26/30 completed
+2025-03-14 05:57:28,494 - pinterest_browser_scraper - INFO - Method 2 scroll 27/30 completed
+2025-03-14 05:57:31,006 - pinterest_browser_scraper - INFO - Method 2 scroll 28/30 completed
+2025-03-14 05:57:33,519 - pinterest_browser_scraper - INFO - Method 2 scroll 29/30 completed
+2025-03-14 05:57:36,029 - pinterest_browser_scraper - INFO - Method 2 scroll 30/30 completed
+2025-03-14 05:57:36,031 - pinterest_browser_scraper - INFO - Attempting to extract image URLs from pin elements
+2025-03-14 05:57:36,052 - pinterest_browser_scraper - INFO - Found 20 image URLs using method 2
+2025-03-14 05:57:36,052 - pinterest_browser_scraper - INFO - Method 2 sample URLs: ['https://i.pinimg.com/originals/ce/be/81/cebe8108d0e88b448c1654c1d48128c4.jpg', 'https://i.pinimg.com/originals/10/c8/2a/10c82a601b6a4d0b4fa6b2bdbd0979e0.jpg', 'https://i.pinimg.com/originals/28/fc/18/28fc18eeb87616de8bc6969475dd3c92.jpg']
+2025-03-14 05:57:52,858 - pinterest_browser_scraper - INFO - Setting up Chrome browser
+2025-03-14 05:57:52,859 - pinterest_browser_scraper - INFO - Attempting to get compatible ChromeDriver
+2025-03-14 05:57:52,859 - WDM - INFO - ====== WebDriver manager ======
+2025-03-14 05:57:53,575 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-14 05:57:53,705 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-14 05:57:53,856 - WDM - INFO - Driver [C:\Users\RISHI\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver.exe] found in cache
+2025-03-14 05:57:54,950 - pinterest_browser_scraper - INFO - Chrome browser initialized successfully
+2025-03-14 05:57:54,951 - pinterest_browser_scraper - INFO - Navigating to search URL: https://www.pinterest.com/search/pins/?q=Gorpcore+%28gorpcore+aesthetics%2C+technical+outfit%29&rs=typed
+2025-03-14 05:57:57,047 - pinterest_browser_scraper - INFO - Loaded search page for 'Gorpcore (gorpcore aesthetics, technical outfit)'
+2025-03-14 05:57:57,048 - pinterest_browser_scraper - INFO - Waiting for images to load
+2025-03-14 05:57:57,563 - pinterest_browser_scraper - INFO - Images loaded successfully
+2025-03-14 05:57:57,564 - pinterest_browser_scraper - INFO - Scrolling to load more images (30 scrolls)
+2025-03-14 05:57:59,570 - pinterest_browser_scraper - INFO - Scroll 1/30 completed
+2025-03-14 05:58:01,600 - pinterest_browser_scraper - INFO - Scroll 2/30 completed
+2025-03-14 05:58:03,625 - pinterest_browser_scraper - INFO - Scroll 3/30 completed
+2025-03-14 05:58:05,655 - pinterest_browser_scraper - INFO - Scroll 4/30 completed
+2025-03-14 05:58:07,716 - pinterest_browser_scraper - INFO - Scroll 5/30 completed
+2025-03-14 05:58:09,746 - pinterest_browser_scraper - INFO - Scroll 6/30 completed
+2025-03-14 05:58:11,779 - pinterest_browser_scraper - INFO - Scroll 7/30 completed
+2025-03-14 05:58:13,808 - pinterest_browser_scraper - INFO - Scroll 8/30 completed
+2025-03-14 05:58:15,841 - pinterest_browser_scraper - INFO - Scroll 9/30 completed
+2025-03-14 05:58:17,980 - pinterest_browser_scraper - INFO - Scroll 10/30 completed
+2025-03-14 05:58:20,016 - pinterest_browser_scraper - INFO - Scroll 11/30 completed
+2025-03-14 05:58:22,050 - pinterest_browser_scraper - INFO - Scroll 12/30 completed
+2025-03-14 05:58:24,078 - pinterest_browser_scraper - INFO - Scroll 13/30 completed
+2025-03-14 05:58:26,085 - pinterest_browser_scraper - INFO - Scroll 14/30 completed
+2025-03-14 05:58:28,193 - pinterest_browser_scraper - INFO - Scroll 15/30 completed
+2025-03-14 05:58:30,232 - pinterest_browser_scraper - INFO - Scroll 16/30 completed
+2025-03-14 05:58:32,260 - pinterest_browser_scraper - INFO - Scroll 17/30 completed
+2025-03-14 05:58:34,296 - pinterest_browser_scraper - INFO - Scroll 18/30 completed
+2025-03-14 05:58:36,338 - pinterest_browser_scraper - INFO - Scroll 19/30 completed
+2025-03-14 05:58:38,474 - pinterest_browser_scraper - INFO - Scroll 20/30 completed
+2025-03-14 05:58:40,510 - pinterest_browser_scraper - INFO - Scroll 21/30 completed
+2025-03-14 05:58:42,519 - pinterest_browser_scraper - INFO - Scroll 22/30 completed
+2025-03-14 05:58:44,525 - pinterest_browser_scraper - INFO - Scroll 23/30 completed
+2025-03-14 05:58:46,540 - pinterest_browser_scraper - INFO - Scroll 24/30 completed
+2025-03-14 05:58:48,551 - pinterest_browser_scraper - INFO - Scroll 25/30 completed
+2025-03-14 05:58:50,563 - pinterest_browser_scraper - INFO - Scroll 26/30 completed
+2025-03-14 05:58:52,575 - pinterest_browser_scraper - INFO - Scroll 27/30 completed
+2025-03-14 05:58:54,587 - pinterest_browser_scraper - INFO - Scroll 28/30 completed
+2025-03-14 05:58:56,596 - pinterest_browser_scraper - INFO - Scroll 29/30 completed
+2025-03-14 05:58:58,606 - pinterest_browser_scraper - INFO - Scroll 30/30 completed
+2025-03-14 05:58:58,607 - pinterest_browser_scraper - INFO - Extracting image URLs from the page
+2025-03-14 05:58:58,622 - pinterest_browser_scraper - INFO - Found 16 image URLs using method 1
+2025-03-14 05:58:58,622 - pinterest_browser_scraper - INFO - Sample URLs: ['https://i.pinimg.com/originals/c4/7c/ce/c47cce4ed501c48a33738cf852645ed8.jpg', 'https://i.pinimg.com/originals/05/24/92/0524921a583b2c8068bee0cde82cdef2.jpg', 'https://i.pinimg.com/originals/1c/15/fa/1c15fa6f6af0bc87f141e4f59c221586.jpg']
+2025-03-14 05:59:02,291 - pinterest_browser_scraper - INFO - Navigating to search URL for method 2: https://www.pinterest.com/search/pins/?q=Gorpcore+%28gorpcore+aesthetics%2C+technical+outfit%29&rs=typed
+2025-03-14 05:59:02,647 - pinterest_browser_scraper - INFO - Loaded search page for method 2: 'Gorpcore (gorpcore aesthetics, technical outfit)'
+2025-03-14 05:59:02,648 - pinterest_browser_scraper - INFO - Waiting for images to load
+2025-03-14 05:59:05,895 - pinterest_browser_scraper - INFO - Images loaded successfully
+2025-03-14 05:59:05,896 - pinterest_browser_scraper - INFO - Scrolling to load more images for method 2 (30 scrolls)
+2025-03-14 05:59:08,437 - pinterest_browser_scraper - INFO - Method 2 scroll 1/30 completed
+2025-03-14 05:59:10,968 - pinterest_browser_scraper - INFO - Method 2 scroll 2/30 completed
+2025-03-14 05:59:13,499 - pinterest_browser_scraper - INFO - Method 2 scroll 3/30 completed
+2025-03-14 05:59:16,036 - pinterest_browser_scraper - INFO - Method 2 scroll 4/30 completed
+2025-03-14 05:59:18,564 - pinterest_browser_scraper - INFO - Method 2 scroll 5/30 completed
+2025-03-14 05:59:21,154 - pinterest_browser_scraper - INFO - Method 2 scroll 6/30 completed
+2025-03-14 05:59:23,686 - pinterest_browser_scraper - INFO - Method 2 scroll 7/30 completed
+2025-03-14 05:59:26,221 - pinterest_browser_scraper - INFO - Method 2 scroll 8/30 completed
+2025-03-14 05:59:28,749 - pinterest_browser_scraper - INFO - Method 2 scroll 9/30 completed
+2025-03-14 05:59:31,283 - pinterest_browser_scraper - INFO - Method 2 scroll 10/30 completed
+2025-03-14 05:59:33,930 - pinterest_browser_scraper - INFO - Method 2 scroll 11/30 completed
+2025-03-14 05:59:36,460 - pinterest_browser_scraper - INFO - Method 2 scroll 12/30 completed
+2025-03-14 05:59:38,990 - pinterest_browser_scraper - INFO - Method 2 scroll 13/30 completed
+2025-03-14 05:59:41,536 - pinterest_browser_scraper - INFO - Method 2 scroll 14/30 completed
+2025-03-14 05:59:44,077 - pinterest_browser_scraper - INFO - Method 2 scroll 15/30 completed
+2025-03-14 05:59:46,606 - pinterest_browser_scraper - INFO - Method 2 scroll 16/30 completed
+2025-03-14 05:59:49,119 - pinterest_browser_scraper - INFO - Method 2 scroll 17/30 completed
+2025-03-14 05:59:51,642 - pinterest_browser_scraper - INFO - Method 2 scroll 18/30 completed
+2025-03-14 05:59:54,155 - pinterest_browser_scraper - INFO - Method 2 scroll 19/30 completed
+2025-03-14 05:59:56,668 - pinterest_browser_scraper - INFO - Method 2 scroll 20/30 completed
+2025-03-14 05:59:59,184 - pinterest_browser_scraper - INFO - Method 2 scroll 21/30 completed
+2025-03-14 06:00:01,694 - pinterest_browser_scraper - INFO - Method 2 scroll 22/30 completed
+2025-03-14 06:00:04,208 - pinterest_browser_scraper - INFO - Method 2 scroll 23/30 completed
+2025-03-14 06:00:06,719 - pinterest_browser_scraper - INFO - Method 2 scroll 24/30 completed
+2025-03-14 06:00:09,230 - pinterest_browser_scraper - INFO - Method 2 scroll 25/30 completed
+2025-03-14 06:00:11,742 - pinterest_browser_scraper - INFO - Method 2 scroll 26/30 completed
+2025-03-14 06:00:14,252 - pinterest_browser_scraper - INFO - Method 2 scroll 27/30 completed
+2025-03-14 06:00:16,766 - pinterest_browser_scraper - INFO - Method 2 scroll 28/30 completed
+2025-03-14 06:00:19,271 - pinterest_browser_scraper - INFO - Method 2 scroll 29/30 completed
+2025-03-14 06:00:21,778 - pinterest_browser_scraper - INFO - Method 2 scroll 30/30 completed
+2025-03-14 06:00:21,779 - pinterest_browser_scraper - INFO - Attempting to extract image URLs from pin elements
+2025-03-14 06:00:21,788 - pinterest_browser_scraper - INFO - Found 27 image URLs using method 2
+2025-03-14 06:00:21,788 - pinterest_browser_scraper - INFO - Method 2 sample URLs: ['https://i.pinimg.com/originals/d8/bb/5c/d8bb5cc6fefb6605de0114ee8713fe9e.jpg', 'https://i.pinimg.com/originals/cd/66/cb/cd66cbeab8a13884242805d089433dd0.jpg', 'https://i.pinimg.com/originals/85/e3/cc/85e3cca9c6adf3080eff4a68a1dce492.jpg']
+2025-03-14 06:00:48,579 - pinterest_browser_scraper - INFO - Setting up Chrome browser
+2025-03-14 06:00:48,580 - pinterest_browser_scraper - INFO - Attempting to get compatible ChromeDriver
+2025-03-14 06:00:48,580 - WDM - INFO - ====== WebDriver manager ======
+2025-03-14 06:00:49,282 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-14 06:00:49,405 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-14 06:00:49,510 - WDM - INFO - Driver [C:\Users\RISHI\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver.exe] found in cache
+2025-03-14 06:00:50,542 - pinterest_browser_scraper - INFO - Chrome browser initialized successfully
+2025-03-14 06:00:50,543 - pinterest_browser_scraper - INFO - Navigating to search URL: https://www.pinterest.com/search/pins/?q=Douyin+%28douyin+aesthetics%2C+Harajuku+aesthetics%29&rs=typed
+2025-03-14 06:00:54,996 - pinterest_browser_scraper - INFO - Loaded search page for 'Douyin (douyin aesthetics, Harajuku aesthetics)'
+2025-03-14 06:00:54,996 - pinterest_browser_scraper - INFO - Waiting for images to load
+2025-03-14 06:00:55,008 - pinterest_browser_scraper - INFO - Images loaded successfully
+2025-03-14 06:00:55,008 - pinterest_browser_scraper - INFO - Scrolling to load more images (30 scrolls)
+2025-03-14 06:00:57,049 - pinterest_browser_scraper - INFO - Scroll 1/30 completed
+2025-03-14 06:00:59,083 - pinterest_browser_scraper - INFO - Scroll 2/30 completed
+2025-03-14 06:01:01,113 - pinterest_browser_scraper - INFO - Scroll 3/30 completed
+2025-03-14 06:01:03,149 - pinterest_browser_scraper - INFO - Scroll 4/30 completed
+2025-03-14 06:01:05,180 - pinterest_browser_scraper - INFO - Scroll 5/30 completed
+2025-03-14 06:01:07,214 - pinterest_browser_scraper - INFO - Scroll 6/30 completed
+2025-03-14 06:01:09,247 - pinterest_browser_scraper - INFO - Scroll 7/30 completed
+2025-03-14 06:01:11,275 - pinterest_browser_scraper - INFO - Scroll 8/30 completed
+2025-03-14 06:01:13,305 - pinterest_browser_scraper - INFO - Scroll 9/30 completed
+2025-03-14 06:01:15,488 - pinterest_browser_scraper - INFO - Scroll 10/30 completed
+2025-03-14 06:01:17,537 - pinterest_browser_scraper - INFO - Scroll 11/30 completed
+2025-03-14 06:01:19,610 - pinterest_browser_scraper - INFO - Scroll 12/30 completed
+2025-03-14 06:01:21,640 - pinterest_browser_scraper - INFO - Scroll 13/30 completed
+2025-03-14 06:01:23,664 - pinterest_browser_scraper - INFO - Scroll 14/30 completed
+2025-03-14 06:01:25,815 - pinterest_browser_scraper - INFO - Scroll 15/30 completed
+2025-03-14 06:01:27,889 - pinterest_browser_scraper - INFO - Scroll 16/30 completed
+2025-03-14 06:01:29,966 - pinterest_browser_scraper - INFO - Scroll 17/30 completed
+2025-03-14 06:01:32,074 - pinterest_browser_scraper - INFO - Scroll 18/30 completed
+2025-03-14 06:01:34,155 - pinterest_browser_scraper - INFO - Scroll 19/30 completed
+2025-03-14 06:01:36,294 - pinterest_browser_scraper - INFO - Scroll 20/30 completed
+2025-03-14 06:01:38,323 - pinterest_browser_scraper - INFO - Scroll 21/30 completed
+2025-03-14 06:01:40,337 - pinterest_browser_scraper - INFO - Scroll 22/30 completed
+2025-03-14 06:01:42,441 - pinterest_browser_scraper - INFO - Scroll 23/30 completed
+2025-03-14 06:01:44,599 - pinterest_browser_scraper - INFO - Scroll 24/30 completed
+2025-03-14 06:01:46,679 - pinterest_browser_scraper - INFO - Scroll 25/30 completed
+2025-03-14 06:01:48,718 - pinterest_browser_scraper - INFO - Scroll 26/30 completed
+2025-03-14 06:01:50,829 - pinterest_browser_scraper - INFO - Scroll 27/30 completed
+2025-03-14 06:01:52,904 - pinterest_browser_scraper - INFO - Scroll 28/30 completed
+2025-03-14 06:01:55,086 - pinterest_browser_scraper - INFO - Scroll 29/30 completed
+2025-03-14 06:01:57,118 - pinterest_browser_scraper - INFO - Scroll 30/30 completed
+2025-03-14 06:01:57,119 - pinterest_browser_scraper - INFO - Extracting image URLs from the page
+2025-03-14 06:01:57,133 - pinterest_browser_scraper - INFO - Found 26 image URLs using method 1
+2025-03-14 06:01:57,133 - pinterest_browser_scraper - INFO - Sample URLs: ['https://i.pinimg.com/originals/b2/35/d8/b235d8356e0a2a99c4c4806a1f6a4f6c.jpg', 'https://i.pinimg.com/originals/37/4e/2a/374e2acd32d00ece9ce9d6e94843fb1a.jpg', 'https://i.pinimg.com/originals/e4/a8/ed/e4a8ed509467b251c88829fdbc510127.jpg']
+2025-03-14 06:02:00,804 - pinterest_browser_scraper - INFO - Navigating to search URL for method 2: https://www.pinterest.com/search/pins/?q=Douyin+%28douyin+aesthetics%2C+Harajuku+aesthetics%29&rs=typed
+2025-03-14 06:02:01,345 - pinterest_browser_scraper - INFO - Loaded search page for method 2: 'Douyin (douyin aesthetics, Harajuku aesthetics)'
+2025-03-14 06:02:01,346 - pinterest_browser_scraper - INFO - Waiting for images to load
+2025-03-14 06:02:02,481 - pinterest_browser_scraper - INFO - Images loaded successfully
+2025-03-14 06:02:02,482 - pinterest_browser_scraper - INFO - Scrolling to load more images for method 2 (30 scrolls)
+2025-03-14 06:02:05,004 - pinterest_browser_scraper - INFO - Method 2 scroll 1/30 completed
+2025-03-14 06:02:07,534 - pinterest_browser_scraper - INFO - Method 2 scroll 2/30 completed
+2025-03-14 06:02:10,068 - pinterest_browser_scraper - INFO - Method 2 scroll 3/30 completed
+2025-03-14 06:02:12,603 - pinterest_browser_scraper - INFO - Method 2 scroll 4/30 completed
+2025-03-14 06:02:15,175 - pinterest_browser_scraper - INFO - Method 2 scroll 5/30 completed
+2025-03-14 06:02:17,800 - pinterest_browser_scraper - INFO - Method 2 scroll 6/30 completed
+2025-03-14 06:02:20,329 - pinterest_browser_scraper - INFO - Method 2 scroll 7/30 completed
+2025-03-14 06:02:22,860 - pinterest_browser_scraper - INFO - Method 2 scroll 8/30 completed
+2025-03-14 06:02:25,433 - pinterest_browser_scraper - INFO - Method 2 scroll 9/30 completed
+2025-03-14 06:02:28,063 - pinterest_browser_scraper - INFO - Method 2 scroll 10/30 completed
+2025-03-14 06:02:30,569 - pinterest_browser_scraper - INFO - Method 2 scroll 11/30 completed
+2025-03-14 06:02:33,118 - pinterest_browser_scraper - INFO - Method 2 scroll 12/30 completed
+2025-03-14 06:02:35,628 - pinterest_browser_scraper - INFO - Method 2 scroll 13/30 completed
+2025-03-14 06:02:38,136 - pinterest_browser_scraper - INFO - Method 2 scroll 14/30 completed
+2025-03-14 06:02:40,707 - pinterest_browser_scraper - INFO - Method 2 scroll 15/30 completed
+2025-03-14 06:02:43,276 - pinterest_browser_scraper - INFO - Method 2 scroll 16/30 completed
+2025-03-14 06:02:45,915 - pinterest_browser_scraper - INFO - Method 2 scroll 17/30 completed
+2025-03-14 06:02:48,451 - pinterest_browser_scraper - INFO - Method 2 scroll 18/30 completed
+2025-03-14 06:02:51,031 - pinterest_browser_scraper - INFO - Method 2 scroll 19/30 completed
+2025-03-14 06:02:53,609 - pinterest_browser_scraper - INFO - Method 2 scroll 20/30 completed
+2025-03-14 06:02:56,139 - pinterest_browser_scraper - INFO - Method 2 scroll 21/30 completed
+2025-03-14 06:02:58,689 - pinterest_browser_scraper - INFO - Method 2 scroll 22/30 completed
+2025-03-14 06:03:01,199 - pinterest_browser_scraper - INFO - Method 2 scroll 23/30 completed
+2025-03-14 06:03:03,868 - pinterest_browser_scraper - INFO - Method 2 scroll 24/30 completed
+2025-03-14 06:03:06,412 - pinterest_browser_scraper - INFO - Method 2 scroll 25/30 completed
+2025-03-14 06:03:08,961 - pinterest_browser_scraper - INFO - Method 2 scroll 26/30 completed
+2025-03-14 06:03:11,485 - pinterest_browser_scraper - INFO - Method 2 scroll 27/30 completed
+2025-03-14 06:03:14,001 - pinterest_browser_scraper - INFO - Method 2 scroll 28/30 completed
+2025-03-14 06:03:16,508 - pinterest_browser_scraper - INFO - Method 2 scroll 29/30 completed
+2025-03-14 06:03:19,021 - pinterest_browser_scraper - INFO - Method 2 scroll 30/30 completed
+2025-03-14 06:03:19,022 - pinterest_browser_scraper - INFO - Attempting to extract image URLs from pin elements
+2025-03-14 06:03:19,035 - pinterest_browser_scraper - INFO - Found 17 image URLs using method 2
+2025-03-14 06:03:19,036 - pinterest_browser_scraper - INFO - Method 2 sample URLs: ['https://i.pinimg.com/originals/35/97/51/35975193da14602f8406a8973bb3c3d0.jpg', 'https://i.pinimg.com/originals/84/2b/ed/842bed69ce2458191a63f04d3a6ea43e.jpg', 'https://i.pinimg.com/originals/8f/2c/d1/8f2cd105d2be1b8c0175747df774a905.jpg']
+2025-03-14 06:03:46,417 - pinterest_browser_scraper - INFO - Setting up Chrome browser
+2025-03-14 06:03:46,417 - pinterest_browser_scraper - INFO - Attempting to get compatible ChromeDriver
+2025-03-14 06:03:46,417 - WDM - INFO - ====== WebDriver manager ======
+2025-03-14 06:03:47,157 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-14 06:03:47,261 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-14 06:03:47,370 - WDM - INFO - Driver [C:\Users\RISHI\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver.exe] found in cache
+2025-03-14 06:03:48,412 - pinterest_browser_scraper - INFO - Chrome browser initialized successfully
+2025-03-14 06:03:48,413 - pinterest_browser_scraper - INFO - Navigating to search URL: https://www.pinterest.com/search/pins/?q=Blokecore+%28blokecore+aesthetics%2C+blokecore+outfits%2C+blokette%29&rs=typed
+2025-03-14 06:03:49,389 - pinterest_browser_scraper - INFO - Loaded search page for 'Blokecore (blokecore aesthetics, blokecore outfits, blokette)'
+2025-03-14 06:03:49,389 - pinterest_browser_scraper - INFO - Waiting for images to load
+2025-03-14 06:03:50,985 - pinterest_browser_scraper - INFO - Images loaded successfully
+2025-03-14 06:03:50,986 - pinterest_browser_scraper - INFO - Scrolling to load more images (30 scrolls)
+2025-03-14 06:03:52,992 - pinterest_browser_scraper - INFO - Scroll 1/30 completed
+2025-03-14 06:03:55,034 - pinterest_browser_scraper - INFO - Scroll 2/30 completed
+2025-03-14 06:03:57,065 - pinterest_browser_scraper - INFO - Scroll 3/30 completed
+2025-03-14 06:03:59,094 - pinterest_browser_scraper - INFO - Scroll 4/30 completed
+2025-03-14 06:04:01,121 - pinterest_browser_scraper - INFO - Scroll 5/30 completed
+2025-03-14 06:04:03,150 - pinterest_browser_scraper - INFO - Scroll 6/30 completed
+2025-03-14 06:04:05,191 - pinterest_browser_scraper - INFO - Scroll 7/30 completed
+2025-03-14 06:04:07,412 - pinterest_browser_scraper - INFO - Scroll 8/30 completed

@@ -1,0 +1,18 @@
+# Pinterest Search Terms
+# Format: "search term":number_of_images
+# Example: "mountain landscape":25 will download 25 images of mountain landscapes
+# Once executed, search lines will be marked completed with "DONE - " at the beginning of the line like "DONE - "mountain landscape":25"
+
+# Set default image count (applies to all terms without specific count)
+DEFAULT_IMAGES:100
+
+# Add your search terms below (one per line)
+# If no image count is specified, the DEFAULT_IMAGES value will be used
+
+# Fashion and Style Inspiration
+"Y2K glamour (ed hardy, 2000s dolce&gabbana, 2000s Dior, 2000s Roberto cavalli, von dutch)"
+"Gorpcore (gorpcore aesthetics, technical outfit)"
+"Douyin (douyin aesthetics, Harajuku aesthetics)"
+"Blokecore (blokecore aesthetics, blokecore outfits, blokette)"
+"Archive fashion (Junya Watanabe archival, Helmut lang archival, Ann Demeulemeester archival, Yohji Yamamoto archival)"
+"Tribal (tribe fashion, tribe aesthetics, boho chic)"
