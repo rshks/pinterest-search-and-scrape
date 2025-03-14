@@ -1,0 +1,42 @@
+# Pinterest image scraper specific ignores
+pinterest_images/
+pinterest_scraper.log
+*.log
+
+# Temporary files that may be created during downloads
+temp/
+tmp/
+
+# Python related ignores
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store 
