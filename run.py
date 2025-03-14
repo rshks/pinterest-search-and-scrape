@@ -224,7 +224,7 @@ def scroll_and_extract_urls(search_term, max_images=100, max_scrolls=30):
         adjusted_scrolls = max(max_scrolls, max_images // 5)  # Ensure enough scrolls to find images
         print(f"- Using improved image extraction with {adjusted_scrolls} rapid scrolls")
         
-        urls = extract_image_urls_method2(browser, search_term, adjusted_scrolls)
+        urls = extract_image_urls_method2(browser, search_term, adjusted_scrolls, max_images)
         
         # Process the URLs
         for url in urls:

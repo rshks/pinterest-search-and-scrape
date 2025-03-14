@@ -138,9 +138,15 @@ def extract_image_urls_method1(browser, search_term, num_scrolls=10):
         logger.error(traceback.format_exc())
         return []
 
-def extract_image_urls_method2(browser, search_term, num_scrolls=10):
+def extract_image_urls_method2(browser, search_term, num_scrolls=10, max_images=None):
     """
     Extract image URLs using an improved method with better selectors and scroll-wait pattern
+    
+    Args:
+        browser: Selenium WebDriver instance
+        search_term: Term to search for on Pinterest
+        num_scrolls: Maximum number of scrolls to perform
+        max_images: Maximum number of images to find before stopping (if None, will use num_scrolls * 10)
     """
     from urllib.parse import quote_plus
     # Properly encode the search term - use the exact term as provided
@@ -167,6 +173,12 @@ def extract_image_urls_method2(browser, search_term, num_scrolls=10):
         # Track found URLs
         all_image_urls = set()
         
+        # If max_images is not provided, estimate based on scrolls
+        if max_images is None:
+            max_images = num_scrolls * 10  # Estimate about 10 images per scroll
+            
+        logger.info(f"Will stop scrolling after finding at least {max_images} images")
+        
         # Implement scroll and wait pattern with improved extraction
         logger.info(f"Using scroll-wait-extract pattern for up to {num_scrolls} scrolls")
         for i in range(num_scrolls):
@@ -188,16 +200,38 @@ def extract_image_urls_method2(browser, search_term, num_scrolls=10):
             
             logger.info(f"Scroll {i+1}/{num_scrolls}: Found {num_new_urls} new images (total: {len(all_image_urls)})")
             
+            # Check if we've found enough images already - stop scrolling if we have
+            if len(all_image_urls) >= max_images:
+                logger.info(f"Found {len(all_image_urls)} images, which is sufficient (needed {max_images}). Stopping scrolls.")
+                break
+            
             # Check if we've reached the bottom of the page
             new_height = browser.execute_script("return document.body.scrollHeight")
             if new_height == last_height:
-                # We might be at the bottom, try one more scroll
-                browser.execute_script("window.scrollBy(0, window.innerHeight);")
-                time.sleep(0.5)
-                newer_height = browser.execute_script("return document.body.scrollHeight")
+                # We might be at the bottom, try multiple additional scrolls
+                # Counter for consecutive bottom detections
+                bottom_detection_count = 0
+                max_bottom_detection_attempts = 3  # Try 3 times before confirming it's the bottom
                 
-                if newer_height == new_height:
-                    logger.info("Reached the bottom of the page, stopping scrolls")
+                for _ in range(max_bottom_detection_attempts):
+                    # Scroll again to try loading more content
+                    browser.execute_script("window.scrollBy(0, window.innerHeight);")
+                    # Increase wait time to 2 seconds to give Pinterest time to load more content
+                    time.sleep(4)  # Increased from 0.5 to 4 seconds
+                    newer_height = browser.execute_script("return document.body.scrollHeight")
+                    
+                    if newer_height > new_height:
+                        # Content was loaded, not at the bottom yet
+                        logger.info("More content loaded after bottom check, continuing scrolls")
+                        new_height = newer_height
+                        break
+                    else:
+                        # Still at the same height
+                        bottom_detection_count += 1
+                
+                # If we detected the bottom multiple times consecutively, we're really at the bottom
+                if bottom_detection_count >= max_bottom_detection_attempts:
+                    logger.info(f"Reached the bottom of the page after {bottom_detection_count} consecutive checks, stopping scrolls")
                     break
             
             last_height = new_height
@@ -427,7 +461,7 @@ def pinterest_search_scraper(search_term, output_folder=None, max_images=50, num
             logger.info(f"Method 1 found only {len(image_urls)} images, trying method 2")
             browser.refresh()  # Refresh page before trying again
             time.sleep(3)
-            additional_urls = extract_image_urls_method2(browser, search_term, num_scrolls)
+            additional_urls = extract_image_urls_method2(browser, search_term, num_scrolls, max_images)
             
             # Combine URLs from both methods, removing duplicates
             all_urls = list(set(image_urls + additional_urls))
